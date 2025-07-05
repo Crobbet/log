@@ -1,8 +1,8 @@
 const rl = @import("raylib");
 const std = @import("std");
 
-fn printd(p: f32) !void {
-    std.debug.print("{}", .{p});
+fn death(players_y_position: i32) bool {
+    return players_y_position > rl.getScreenHeight();
 }
 
 pub fn main() anyerror!void {
@@ -10,17 +10,23 @@ pub fn main() anyerror!void {
     const screenHeight = 450;
 
     const positionx = 190;
-    var positiony = [2]f32{ 200, 10 };
+    var color: rl.Color = rl.Color.yellow;
+
+    var positiony = [2]i32{ 200, 10 };
 
     rl.initWindow(screenWidth, screenHeight, "raylib-zig [core] example - basic window");
+
     defer rl.closeWindow();
     rl.setTargetFPS(60);
 
     while (!rl.windowShouldClose()) {
         if (positiony[1] < 10) {
+            color = rl.Color.green;
             positiony[1] = positiony[1] + 1;
         } else if (rl.isKeyPressed(rl.KeyboardKey.space)) {
             positiony[1] = -17;
+        } else {
+            color = rl.Color.red;
         }
         positiony[0] = positiony[0] + positiony[1];
         // Draw
@@ -29,8 +35,10 @@ pub fn main() anyerror!void {
         defer rl.endDrawing();
 
         rl.clearBackground(rl.Color.black);
+        rl.drawCircle(positionx, positiony[0], 20, color);
 
-        rl.drawText("Hallo world!", positionx, @intFromFloat(positiony[0]), 20, rl.Color.white);
-        try printd(positiony[1]);
+        if (death(positiony[0])) {
+            break;
+        }
     }
 }
