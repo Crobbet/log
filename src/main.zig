@@ -1,26 +1,23 @@
 const rl = @import("raylib");
 const std = @import("std");
 
+fn printd(p: f32) !void {
+    std.debug.print("{}", .{p});
+}
+
 pub fn main() anyerror!void {
-    // Initialization
-    //--------------------------------------------------------------------------------------
     const screenWidth = 800;
     const screenHeight = 450;
+
     const positionx = 190;
+    var positiony = [2]f32{ 200, 10 };
 
     rl.initWindow(screenWidth, screenHeight, "raylib-zig [core] example - basic window");
-    defer rl.closeWindow(); // Close window and OpenGL context
+    defer rl.closeWindow();
+    rl.setTargetFPS(60);
 
-    rl.setTargetFPS(60); // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
-
-    var positiony = [2]f32{ 200, 6 };
-
-    while (!rl.windowShouldClose()) { // Detect window close button or ESC key
-        // Update
-        //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
-        if (positiony[1] < 3) {
+    while (!rl.windowShouldClose()) {
+        if (positiony[1] < 10) {
             positiony[1] = positiony[1] + 1;
         } else if (rl.isKeyPressed(rl.KeyboardKey.space)) {
             positiony[1] = -17;
@@ -34,7 +31,6 @@ pub fn main() anyerror!void {
         rl.clearBackground(rl.Color.black);
 
         rl.drawText("Hallo world!", positionx, @intFromFloat(positiony[0]), 20, rl.Color.white);
-        std.debug.print("{}", .{positiony[0]});
-        //----------------------------------------------------------------------------------
+        try printd(positiony[1]);
     }
 }
