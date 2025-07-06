@@ -4,10 +4,11 @@ const std = @import("std");
 const Pipe = struct {
     x_pipes: i32,
     pub fn draw_pipe(self: *Pipe) void {
-        rl.drawRectangle(self.x_pipes, 0, 100, rl.getScreenHeight(), rl.Color.white);
+        rl.drawRectangle(self.x_pipes, 0, 70, rl.getScreenHeight(), rl.Color.white);
+        rl.drawRectangle(self.x_pipes, std.Random.DefaultPrng.init().random().intRange(i32, 10, 600), 70, 70, rl.Color.black);
     }
     pub fn move_pipe(self: *Pipe) void {
-        self.x_pipes = self.x_pipes + 1;
+        self.x_pipes = self.x_pipes - 2;
     }
 };
 
@@ -48,11 +49,12 @@ pub fn main() anyerror!void {
         defer rl.endDrawing();
 
         rl.clearBackground(rl.Color.black);
-        rl.drawCircle(positionx, positiony[0], 20, color);
 
         pipe.draw_pipe();
 
         pipe.move_pipe();
+
+        rl.drawCircle(positionx, positiony[0], 20, color);
 
         if (death(positiony[0])) {
             break;
