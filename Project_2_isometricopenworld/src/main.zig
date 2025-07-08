@@ -1,5 +1,19 @@
 const rl = @import("raylib");
 
+fn draw_tiles() void {
+    var tile_pos = [2]i32{ 0, 0 };
+    while (tile_pos[0] < rl.getScreenWidth() and tile_pos[1] < rl.getScreenHeight()) {
+        rl.drawRectangle(tile_pos[0], tile_pos[1], 100, 100, rl.Color.yellow);
+        tile_pos[0] = tile_pos[0] + 101;
+        if (tile_pos[0] > rl.getScreenWidth()) {
+            tile_pos[1] = tile_pos[1] + 101;
+            tile_pos[0] = 0;
+        }
+    }
+    tile_pos[0] = 0;
+    tile_pos[1] = 0;
+}
+
 pub fn main() anyerror!void {
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -26,9 +40,8 @@ pub fn main() anyerror!void {
 
         rl.clearBackground(.black);
 
-        rl.drawRectangle(0, 0, 100, 100, rl.Color.yellow);
+        draw_tiles();
 
-        rl.drawRectangle(101, 101, 100, 100, rl.Color.yellow);
         //----------------------------------------------------------------------------------
     }
 }
